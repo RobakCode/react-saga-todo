@@ -1,26 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import Home from './pages/Home';
+import { Container } from './AppStyled';
+import GlobalFonts from './assets/fonts';
 
 function App() {
+  const randomIds = randomsNumber();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    randomIds.map( (id: number) => {
+      dispatch({ type: 'GET_TASK_BY_ID', payload: id });
+    });
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <Home />
+      <GlobalFonts />
+    </Container>
   );
+}
+
+const randomsNumber = () => {
+  const result: any = [];
+  while ( result.length < 6 ) {
+    const random = Math.floor(Math.random() * 200) + 1;
+    if ( !result.find( (x: number) => x === random ) ) {
+      result.push( random );
+    }
+  }
+  return result;
 }
 
 export default App;
